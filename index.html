@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="calculator">
+        <h1>Financial Calculator</h1>
+        <div class="input-field">
+            <label for="monthlyRevenue">Monthly Revenue ($):</label>
+            <input type="text" id="monthlyRevenue" placeholder="Enter monthly revenue">
+        </div>
+
+        <div class="input-field">
+            <label for="monthlyExpenses">Monthly Expenses ($):</label>
+            <input type="text" id="monthlyExpenses" placeholder="Enter monthly expenses">
+        </div>
+
+        <div class="input-field">
+            <label for="investmentAmount">Investment Amount ($):</label>
+            <input type="text" id="investmentAmount" placeholder="Enter investment amount">
+        </div>
+
+        <div class="input-field">
+            <label for="loanAmount">Total Amount of Loans ($):</label>
+            <input type="text" id="loanAmount" placeholder="Enter loan amount">
+        </div>
+
+        <div class="input-field">
+            <label for="interestRate">Interest Rate on Loans (%):</label>
+            <input type="text" id="interestRate" placeholder="Enter interest rate">
+        </div>
+
+        <div class="input-field">
+            <label for="loanTerm">Term Length of Loans (years):</label>
+            <input type="text" id="loanTerm" placeholder="Enter loan term">
+        </div>
+
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="clearForm()">Clear</button>
+
+        <div id="result"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
