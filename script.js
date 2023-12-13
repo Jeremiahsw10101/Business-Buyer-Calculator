@@ -1,48 +1,45 @@
 function calculate() {
-    var monthlyRevenue = parseInput(document.getElementById('monthlyRevenue').value);
-    var monthlyExpenses = parseInput(document.getElementById('monthlyExpenses').value);
-    var investmentAmount = parseInput(document.getElementById('investmentAmount').value);
-    var loanAmount = parseInput(document.getElementById('loanAmount').value);
-    var interestRate = parseInput(document.getElementById('interestRate').value) / 100 / 12; // Convert annual rate to monthly
-    var loanTerm = parseInput(document.getElementById('loanTerm').value) * 12; // Convert years to months
+  var monthlyRevenue = parseInput(document.getElementById('monthlyRevenue').value);
+  var monthlyExpenses = parseInput(document.getElementById('monthlyExpenses').value);
+  var investmentAmount = parseInput(document.getElementById('investmentAmount').value);
+  var loanAmount = parseInput(document.getElementById('loanAmount').value);
+  var interestRate = parseInput(document.getElementById('interestRate').value) / 100; // Convert annual rate to a percentage
+  var loanTerm = parseInput(document.getElementById('loanTerm').value) * 12; // Convert years to months
 
-    if (isNaN(monthlyRevenue) || isNaN(monthlyExpenses) || isNaN(investmentAmount) ||
-        isNaN(loanAmount) || isNaN(interestRate) || isNaN(loanTerm)) {
-        alert("Please enter valid numbers in all fields.");
-        return;
-    }
+  if (isNaN(monthlyRevenue) || isNaN(monthlyExpenses) || isNaN(investmentAmount) ||
+    isNaN(loanAmount) || isNaN(interestRate) || isNaN(loanTerm)) {
+    alert("Please enter valid numbers in all fields.");
+    return;
+  }
 
-    var monthlyProfit = monthlyRevenue - monthlyExpenses;
-    var annualProfit = monthlyProfit * 12;
-    var monthlyLoanPayment = loanAmount * interestRate / (1 - Math.pow(1 + interestRate, -loanTerm));
-    var totalLoanCost = monthlyLoanPayment * loanTerm;
-    var totalInterestPaid = totalLoanCost - loanAmount;
-    var principal = loanAmount;
-    var interest = totalInterestPaid;
+  var monthlyOperationIncome = monthlyRevenue - monthlyExpenses;
+  var annualOperationIncome = monthlyOperationIncome * 12;
 
-    document.getElementById('result').innerHTML = `
-        <p>Adjusted Monthly Profit After Loan Payments: ${formatNumber(monthlyProfit - monthlyLoanPayment)}</p>
-        <p>Adjusted Yearly Profits After Loan Payments: ${formatNumber(annualProfit - monthlyLoanPayment * 12)}</p>
-    `;
-    document.getElementById('result').style.display = 'block';
+  // Corrected calculation of monthly loan payment
+  var monthlyLoanPayment = calculateLoanPayment(loanAmount, interestRate, loanTerm);
 
-    drawPieChart(principal, interest);
+  var personalBreakEvenPointMonths = Math.ceil(loanAmount / monthlyLoanPayment);
+  var totalPayments = monthlyLoanPayment * loanTerm;
+  var totalInterestPaid = totalPayments - loanAmount;
+  var adjustedMonthlyProfit = monthlyOperationIncome - monthlyLoanPayment;
+  var adjustedAnnualProfit = adjustedMonthlyProfit * 12;
 
-    var totalPayments = monthlyLoanPayment * loanTerm;
-
-// Add the missing outputs
-var resultHTML = `
-    <p>Income from Operations (Monthly): ${formatNumber(monthlyOperationIncome)}</p>
+  var resultHTML = `
+    <p>Monthly Income from Operations: ${formatNumber(monthlyOperationIncome)}</p>
+    <p>Monthly Loan Payments: ${formatNumber(monthlyLoanPayment)}</p>
     <p>Annual Income from Operations: ${formatNumber(annualOperationIncome)}</p>
-    <p>Break-even Point on Personal Investment (months): ${formatNumber(personalBreakEvenPoint)}</p>
-    <p>Break-even Point vs. Total Loan Cost (months): ${formatNumber(loanBreakEvenPoint)}</p>
-    <p>Loan Payment Per Month: ${formatNumber(monthlyLoanPayment)}</p>
-    <p>Total Cost of Loan: ${formatNumber(totalLoanCost)}</p>
+    <p>Break-even Point on Loan Payments (months): ${personalBreakEvenPointMonths}</p>
+    <p>Total Loan Payment Over Term: ${formatNumber(totalPayments)}</p>
     <p>Total Interest Paid on Loan: ${formatNumber(totalInterestPaid)}</p>
     <p>Adjusted Monthly Profit After Loan Payments: ${formatNumber(adjustedMonthlyProfit)}</p>
     <p>Adjusted Yearly Profits After Loan Payments: ${formatNumber(adjustedAnnualProfit)}</p>
-`;
+  `;
+  // Display the results
+  document.getElementById('result').innerHTML = resultHTML;
+  document.getElementById('result').style.display = 'block';
 
+  // Draw the pie chart
+  drawPieChart(loanAmount, totalInterestPaid);
 }
 
 function clearForm() {
@@ -60,13 +57,28 @@ function clearForm() {
 }
 
 function parseInput(inputValue) {
-    return parseFloat(inputValue.replace(/,/g, ''));
+    // Remove commas and trim whitespace
+  inputValue = inputValue.replace(/,/g, '').trim();
+
+  // Check if the inputValue is a valid number
+  if (!inputValue || isNaN(inputValue)) {
+    return NaN; // Return NaN for invalid input
+  }
+
+  return parseFloat(inputValue);
 }
 
 function formatNumber(number) {
     // This will format the number as currency with two decimal places
     return number.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
+
+
+function calculateLoanPayment(loanAmount, interestRate, loanTerm) {
+  var monthlyInterestRate = interestRate / 12;
+  return loanAmount * (monthlyInterestRate / (1 - Math.pow(1 + monthlyInterestRate, -loanTerm)));
+}
+
 
 
 function drawPieChart(principal, interest) {
@@ -108,6 +120,11 @@ document.querySelectorAll('input[type=text]').forEach(input => {
     });
 });
 
+
+function calculateLoanPayment(loanAmount, interestRate, loanTerm) {
+  var monthlyInterestRate = interestRate / 12;
+  return (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -loanTerm));
+}
 
 // Add this at the end of your script.js
 document.addEventListener('keypress', function(e) {
