@@ -1,21 +1,37 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    background-color: #f5f5f5;
 }
 
 #calculator {
-    overflow-y: auto; /* Enable vertical scrolling */
-    max-height: 90vh; /* Set a maximum height */
+    display: flex;
+    justify-content: space-between;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    width: 350px;
+    max-width: 80%;
+    max-height: 90vh;
+    overflow: auto;
+}
+
+.calculator-section {
+    flex: 1;
+    padding: 10px;
+}
+
+.inputs {
+    max-width: 50%;
+}
+
+.outputs {
+    max-width: 50%;
 }
 
 .input-field {
@@ -55,7 +71,7 @@ button:hover {
 }
 
 #loanChart {
-    max-width: 300px; /* Smaller width for the chart */
-    max-height: 300px; /* Smaller height for the chart */
+    max-width: 300px;
+    max-height: 300px;
     margin-top: 20px;
 }
