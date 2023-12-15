@@ -1,0 +1,16 @@
+{
+  "name": "financial_calculator_with_ai",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Financial calculator with ai v-19c",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2"
+  }
+}
