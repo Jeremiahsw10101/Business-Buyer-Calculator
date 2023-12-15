@@ -1,9 +1,12 @@
+//require('dotenv').config();
 
 // Importing modules using ESM syntax
 import express from 'express';
 import fetch from 'node-fetch';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+
+//const apiKey = process.env.OPENAI_API_KEY;
 
 const app = express();
 app.use(express.json());
