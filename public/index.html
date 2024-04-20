@@ -1,50 +1,65 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Calculator with AI Assistance</title>
+    <title>Business Buying Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div id="calculator">
+    <h2>Live Financial Projection Tool for Business Buyers:</h2>
+
+    <div id="calculator-container">
         <div class="calculator-section inputs">
-            <h1>Financial Calculator</h1>
+            <h2>Inputs</h2>
             <div class="input-field">
-                <label for="monthlyRevenue">Monthly Revenue ($):</label>
-                <input type="text" class="numeric-input" id="monthlyRevenue" placeholder="Enter monthly revenue">
+                <label for="monthlyRevenueSlider">Monthly Revenue2 ($):</label>
+                <div id="monthlyRevenueSlider"></div>
+                <span id="monthlyRevenueValue" class="slider-value"></span>
             </div>
             <div class="input-field">
-                <label for="monthlyExpenses">Monthly Expenses ($):</label>
-                <input type="text" class="numeric-input" id="monthlyExpenses" placeholder="Enter monthly expenses">
+                <label for="monthlyExpensesSlider">Monthly Expenses ($):</label>
+                <div id="monthlyExpensesSlider"></div>
+                <span id="monthlyExpensesValue" class="slider-value"></span>
             </div>
             <div class="input-field">
-                <label for="investmentAmount">Investment Amount ($):</label>
-                <input type="text" class="numeric-input" id="investmentAmount" placeholder="Enter investment amount">
+                <label for="investmentAmountSlider">Investment Amount ($):</label>
+                <div id="investmentAmountSlider"></div>
+                <span id="investmentAmountValue" class="slider-value"></span>
             </div>
             <div class="input-field">
-                <label for="loanAmount">Total Amount of Loans ($):</label>
-                <input type="text" class="numeric-input" id="loanAmount" placeholder="Enter loan amount">
+                <label for="loanAmountSlider">Total Amount of Loans ($):</label>
+                <div id="loanAmountSlider"></div>
+                <span id="loanAmountValue" class="slider-value"></span>
             </div>
             <div class="input-field">
-                <label for="interestRate">Interest Rate on Loans (%):</label>
-                <input type="text" class="numeric-input" id="interestRate" placeholder="Enter interest rate">
+                <label for="interestRateSlider">Interest Rate on Loans (%):</label>
+                <div id="interestRateSlider"></div>
+                <span id="interestRateValue" class="slider-value"></span>
             </div>
             <div class="input-field">
-                <label for="loanTerm">Term Length of Loans (years):</label>
-                <input type="text" class="numeric-input" id="loanTerm" placeholder="Enter loan term">
+                <label for="loanTermSlider">Term Length of Loans (years):</label>
+                <div id="loanTermSlider"></div>
+                <span id="loanTermValue" class="slider-value"></span>
             </div>
-            <button onclick="calculate()">Calculate</button>
-            <button onclick="clearForm()">Clear</button>
         </div>
         <div class="calculator-section outputs">
+            <h2>Outputs</h2>
             <div id="result"></div>
-            <canvas id="loanChart" width="400" height="400"></canvas>
+            <div id="chart-container">
+                <div class="chart-item">
+                    <canvas id="loanChart" width="400" height="400"></canvas>
+                </div>
+                <div class="chart-item">
+                    <canvas id="loanPaymentChart" width="400" height="400"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- AI Chat Section -->
     <div class="ai-section">
         <h2>Your Personal Financial Chatbot:</h2>
         <div>
