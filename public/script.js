@@ -291,3 +291,23 @@ document.getElementById('userQuery').addEventListener('keypress', function(e) {
         }
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('modeToggle');
+    const body = document.body;
+
+    toggleBtn.addEventListener('change', function () {
+        if (toggleBtn.checked) {
+            body.classList.add('dark-mode');
+        } else {
+            body.classList.remove('dark-mode');
+        }
+    });
+});
+
+function toggleChatbot() {
+    var chatbot = document.getElementById("chatbot");
+    chatbot.classList.toggle('active');
+    chatbot.style.display = (chatbot.style.display === "none") ? "block" : "none";
+}
+

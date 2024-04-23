@@ -4,19 +4,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Buying Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.css">
     <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
 </head>
 <body>
-    <h2>Live Financial Projection Tool for Business Buyers:</h2>
-
+    <div style="display: flex;text-align: center;">
+    <h2 >Live Financial Projection Tool for Business Buyers:</h2>
+    <span class="toggle-btn">
+        <input type="checkbox" id="modeToggle">
+        <label for="modeToggle"></label>
+    </span>
+    
+</div>
     <div id="calculator-container">
-        <div class="calculator-section inputs">
+        <div class="calculator-section inputs" style="box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
             <h2>Inputs</h2>
+           
+           
             <div class="input-field">
-                <label for="monthlyRevenueSlider">Monthly Revenue2 ($):</label>
+                <label for="monthlyRevenueSlider">Monthly Revenue ($):</label>
                 <div id="monthlyRevenueSlider"></div>
                 <span id="monthlyRevenueValue" class="slider-value"></span>
             </div>
@@ -46,25 +59,38 @@
                 <span id="loanTermValue" class="slider-value"></span>
             </div>
         </div>
-        <div class="calculator-section outputs">
+        <div class="calculator-section outputs" >
             <h2>Outputs</h2>
             <div id="result"></div>
-            <div id="chart-container">
-                <div class="chart-item">
-                    <canvas id="loanChart" width="400" height="400"></canvas>
-                </div>
-                <div class="chart-item">
-                    <canvas id="loanPaymentChart" width="400" height="400"></canvas>
-                </div>
-            </div>
+           
         </div>
     </div>
-
-    <div class="ai-section">
+    <div class="chartparent">
+    <div id="chart-container">
+        <div class="chart-item">
+            <canvas id="loanChart" width="400" height="400"></canvas>
+        </div>
+        <div class="chart-item">
+            <canvas id="loanPaymentChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+    </div>
+    <!-- <div class="ai-section">
         <h2>Your Personal Financial Chatbot:</h2>
         <div>
             <input type="text" id="userQuery" placeholder="Ask me anything! I can even answer questions about your business">
             <button onclick="askAI()">Ask</button>
+        </div>
+        <div id="aiResponse"></div>
+    </div> -->
+    <div class="chatbot-icon" onclick="toggleChatbot()">
+      
+        <img src="https://freelogopng.com/images/all_img/1681038242chatgpt-logo-png.png" onclick="askAI()" alt="Chatbot" style="width: 50px;">
+    </div>
+    <div class="chatbot" id="chatbot">
+        <div>
+            <input type="text" id="userQuery" placeholder="Ask me anything! I can even answer questions about your business">
+            
         </div>
         <div id="aiResponse"></div>
     </div>
