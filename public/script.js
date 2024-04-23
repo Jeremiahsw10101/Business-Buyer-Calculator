@@ -205,69 +205,35 @@ function drawLoanPaymentChart(profit, payment) {
     }
 }
 
-// Function to send queries to ChatGPT or a similar AI and other event listeners...
 
-// Function to send queries to ChatGPT or a similar AI
 async function askAI() {
     const userQuery = document.getElementById('userQuery').value;
-    let augmentedQuery = userQuery;
+    const calculatorResults = document.getElementById('result').innerText;
 
-    // Check if calculator results are displayed
-    const resultElement = document.getElementById('result');
-    if (resultElement && resultElement.style.display !== 'none') {
-        const calculatorResults = resultElement.innerText;
-
-        augmentedQuery = `
-        Soon I will ask you a question. I want you to respond to my question, however if my question involves
-        something about this data, respond to my question given that data:
-
-        " ${calculatorResults} "
-
-        - However, if my question does not involve business or this data somehow, I want you to ignore the previous business
-        data and just answer my question normally.
-
-        - Ok, here is my question:
-
-        " ${userQuery} "
-
-        - also, moving forward, do not talk about the fact that you are doing this, or reference any of the data about the business unless specifically
-        asked to talk about it.
-
-        Also, I want you to take into account that you are a tool to help a potential investor that is interested in
-        buying a business. The investor is most importantly interested in generating a profit for himself and will be
-        especially focusing on the Return on investment he will get from his personal investment costs
-
-        Also a business is a better business if it generates more monthly cash flow minus the loan payment costs each month, the higher the ratio of
-        monthly cash flow to loan payment costs, the better the business is (make sure to mention this in your answer if applicable)
-        `;
-
-        console.log(augmentedQuery); // Log the augmentedQuery directly
-    }
+    const requestData = {
+        query: userQuery,
+        results: calculatorResults
+    };
 
     const responseElement = document.getElementById('aiResponse');
 
     try {
-        const response = await fetch('/ask-openai', {
+        const response = await fetch('/ask-augmented-openai', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt: augmentedQuery, max_tokens: 150 }) // Use the augmentedQuery here
+            body: JSON.stringify(requestData)
         });
 
         const text = await response.text();
-
-        if (text) {
-            responseElement.innerText = text;
-            responseElement.style.display = 'block'; // Make the element visible
-        } else {
-            responseElement.innerText = 'No response from AI.';
-            responseElement.style.display = 'block'; // Make the element visible
-        }
+        responseElement.innerText = text;
+        responseElement.style.display = 'block';
     } catch (error) {
         console.error('Error:', error);
         responseElement.innerText = 'Failed to get response.';
-        responseElement.style.display = 'block'; // Make the element visible even in case of error
+        responseElement.style.display = 'block';
     }
 }
+
 
 // Add event listener for 'Enter' keypress
 document.addEventListener('keypress', function(e) {
