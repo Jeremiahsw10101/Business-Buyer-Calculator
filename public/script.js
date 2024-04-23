@@ -176,7 +176,7 @@ function drawLoanPaymentChart(profit, payment) {
                 maintainAspectRatio: false,
                 responsive: true,
                 width: 100,
-                height: 100, // Set the desired width and height 
+                height: 100, // Set the desired width and height
                 plugins: {
                     title: {
                         display: true,
