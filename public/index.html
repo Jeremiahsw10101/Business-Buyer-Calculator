@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Buying Calculator</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style.css">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.css">
     <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
@@ -14,9 +14,156 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
 </head>
+<style>
+    @media screen and (max-width: 768px) {
+    body {
+        overflow: hidden;
+    }
+}
+
+#animationportrait{
+    display: none;
+   
+}
+.inputmain{
+    width: 700px;
+}
+.outputmain{
+  width: 800px;
+}
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  body{
+    background-color: black;
+  }
+  #animationportrait{
+    margin-top: 70%;
+    display: block;
+  }
+  .landscapemobile{
+    display: none;
+  }
+}
+@media screen and (max-width: 768px)  and (orientation: landscape) {
+  
+
+    #animationportrait{
+    display: none;
+  }
+  .landscapemobile{
+    display: flex;
+        flex-wrap: wrap; /* Allow items to wrap to the next row */
+        justify-content: space-between; /
+   
+  }
+  h2{
+    font-size: 10px;
+   
+  }
+  .input-field label,.slider-value{font-size: 10px;}
+  .headingdiv{
+    padding-left: 20px;
+  }
+  .noUi-horizontal{
+    height: 5px;
+  }
+  #result, #aiResponse {
+    margin-top: -4px;
+        font-size: 10px;
+  }
+  .noUi-handle:after, .noUi-handle:before{
+    display: none;
+  }
+  .noUi-horizontal .noUi-handle {
+    width: 17px;
+    height: 15px;
+    right: -17px;
+    top: -6px;
+}
+
+  .toggle-btn label{
+    width: 50%;
+    height: 50%;
+  }
+  .toggle-btn label:after {
+   
+    top: 1px;
+    left: 2px;
+    width: 13px;
+    height: 13px;
+}
+  .calculator-container{
+    display: flex;
+        flex-wrap: wrap; /* Allow items to wrap to the next row */
+        justify-content: space-between; /
+        
+  }
+  #calculator-container{
+    width: 500px;
+   flex-direction: row;
+    align-items: self-start;
+  }
+ .inputs,.outputs{
+    margin: 0;
+
+    
+ }
+ .outputs{
+  padding-right: 0px;
+   
+ }
+ .chartparent{
+  padding-top: 2px;
+  background-color: white;
+width: 24.3%;
+height: 322px;
+
+border-radius: 10px;
+margin-right: 4px;
+ }
+ #loanChart, #loanPaymentChart {
+      margin-left: 2px;
+      height: 150px;
+}
+
+ .inputmain{
+ 
+    width: 170px;
+}
+#result, #aiResponse{
+    padding-right: -10px;
+}
+#loanChart,#loanPaymentChart{
+  
+  height: 150px;
+  width: 150px;
+}
+
+.inputmain{
+  width: 170px;
+}
+#result, #aiResponse{
+  padding-right: -10px;
+}
+
+.headingdiv{
+    width: 100%;
+}
+.outputmain{
+  width: 320px;
+}
+}
+.chart-item canvas{
+    width: 400;
+    height: 400;
+}
+
+</style>
 <body>
-    <div style="display: flex;text-align: center;">
-    <h2 >Live Financial Projection Tool for Business Buyers:</h2>
+
+    <img src="portraitanimation.gif" alt="Example GIF" id="animationportrait" style="width:100%;height: auto;" >
+    <section class="landscapemobile" style="width: 100%;">
+    <div style="display: flex;text-align: center;padding-top: 20px;" class="headingdiv">
+    <h2 style="margin: 0 auto;">Live Financial Projection Tool for Business Buyers:</h2>
     <span class="toggle-btn">
         <input type="checkbox" id="modeToggle">
         <label for="modeToggle"></label>
@@ -24,6 +171,7 @@
     
 </div>
     <div id="calculator-container">
+        <div class="inputmain" >
         <div class="calculator-section inputs" style="box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
             <h2>Inputs</h2>
            
@@ -59,30 +207,26 @@
                 <span id="loanTermValue" class="slider-value"></span>
             </div>
         </div>
+    </div>
+    <div class="outputmain">
         <div class="calculator-section outputs" >
             <h2>Outputs</h2>
             <div id="result"></div>
            
         </div>
+      </div>
     </div>
     <div class="chartparent">
     <div id="chart-container">
         <div class="chart-item">
-            <canvas id="loanChart" width="400" height="400"></canvas>
+            <canvas id="loanChart"></canvas>
         </div>
         <div class="chart-item">
-            <canvas id="loanPaymentChart" width="400" height="400"></canvas>
+            <canvas id="loanPaymentChart" ></canvas>
         </div>
     </div>
     </div>
-    <!-- <div class="ai-section">
-        <h2>Your Personal Financial Chatbot:</h2>
-        <div>
-            <input type="text" id="userQuery" placeholder="Ask me anything! I can even answer questions about your business">
-            <button onclick="askAI()">Ask</button>
-        </div>
-        <div id="aiResponse"></div>
-    </div> -->
+  
     <div class="chatbot-icon" onclick="toggleChatbot()">
       
         <img src="https://freelogopng.com/images/all_img/1681038242chatgpt-logo-png.png" onclick="askAI()" alt="Chatbot" style="width: 50px;">
@@ -94,7 +238,7 @@
         </div>
         <div id="aiResponse"></div>
     </div>
-
+</section>
     <script src="script.js"></script>
 </body>
 </html>

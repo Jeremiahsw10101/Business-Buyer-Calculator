@@ -9,7 +9,7 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 
-// added this apikey variable setup here 
+// added this apikey variable setup here
 const apiKey = process.env.OPENAI_API_KEY;
 
 const app = express();
@@ -22,66 +22,39 @@ const __dirname = dirname(fileURLToPath(import.meta.url));1
 app.use(express.static(join(__dirname, 'public')));
 
 
-app.post('/ask-augmented-openai', async (req, res) => {
-    const { query, results } = req.body;
-
-    const augmentedQuery = `
-        You are an AI assistant integrated into a financial analysis tool designed to help potential investors 
-        evaluate businesses for purchase and decide if they want to purchase it or not. 
-        Your main goal is to assess the Return on Investment (ROI) that the investor can expect, 
-        focusing specifically on the cash flow to their pockets and their personal contribution and loan payment costs.
-        
-        This is the financial data about the business:
-        "${results}"
-        
-        This is the user question:
-        "${query}"
-
-      
-        If the user question is related to the business, then use these guidelines to provide a helpful response.
-
-        The Guidelines:
-        - Dont mention the busines unless the user's question is directly related to it.
-        - Analyze financial data to offer insights on if the business buyer should buy the potential business.
-        - Evaluate if the business cash flow adequately covers loan payments; suggest it's a good investment if so.
-        - Advise against the acquisition if monthly loan payments exceed monthly cash flow.
-        - Suggest financial adjustments (like changing loan terms) to enhance profitability when needed.
-        
-        Respond with actionable insights, preferably in bullet points for clarity. 
-
-        if the user question is this " " respond with this:
-        
-        "I'm an AI assistant here to help you with any questions you may have. Feel free to ask anything you need assistance with on your decision to buy this business!"
-        
-        if the user question is something not related to the business, then just provide a general response without anything that i told you so far in this prompt.
-    `;
-    console.log('augmentedQuery: \n\n', augmentedQuery);
-
+// AI request handling endpoint
+app.post('/ask-openai', async (req, res) => {
     try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 model: "gpt-3.5-turbo",
-                messages: [{ role: "system", content: augmentedQuery }]
+                messages: [{ role: "user", content: req.body.prompt }]
             })
         });
 
+        //removing this for the test:
+        //const data = await response.json();
+        //res.send(data);
+        // end of what is removed
         const data = await response.json();
+        console.log(data);  // Log the response data for debugging
+        
         if (data.choices && data.choices.length > 0) {
             res.send(data.choices[0].message.content);
         } else {
             res.status(500).send('Unexpected response structure from OpenAI API');
         }
+        //end of what is being added
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('An error occurred on the server.');
     }
 });
-
 
 
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>/* First let's define some common styles */
+
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  #animation{
+    display: block;
+  }
+  #p{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px)  and (orientation: landscape) {
+    #animation{
+    display: none;
+  }
+  #p{
+    display: block;
+  }
+}
+
+        </style>
+</head>
+<body>
+   
+    <img src="portraitanimation.gif" alt="Example GIF" id="animation">
+    <p id="p">i am in landscape</p>
+</body>
+</html>

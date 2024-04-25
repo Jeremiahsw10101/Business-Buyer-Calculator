@@ -61,18 +61,18 @@ function calculate() {
     
 
     var resultHTML = `
-    <p>Monthly Operational Income: ${formatNumber(monthlyOperationIncome)}</p>
-    <p>Annual Operational Income: ${formatNumber(annualOperationIncome)}</p>
-    <p>Total Business Valuation: ${formatNumber(totalBusinessPrice)}</p>
-    <p>Return on Business Purchase Price: ${businessInterestRate.toFixed(2)}%</p>
-    <p>Return on Personal Investment: ${personalInvestmentInterest.toFixed(2)}%</p>
-    <p>Time to Recoup Loan Interest with Income: ${yearsToPayOffInterest.toFixed(2)} Years</p>
-    <p>Time Till you can own 100% of the business: ${yearsToPayOffLoan.toFixed(2)} Years</p>
-    <p>Cumulative Loan Payments: ${formatNumber(totalPayments)}</p>
-    <p>Average Monthly Loan Payment: ${formatNumber(monthlyLoanPayment)}</p>
-    <p>Total Interest Incurred on Loan: ${formatNumber(totalInterestPaid)}</p>
-    <p>Net Monthly Profit (Post-Loan Payments): ${formatNumber(adjustedMonthlyProfit)}</p>
-    <p>Net Annual Profit (Post-Loan Payments): ${formatNumber(adjustedAnnualProfit)}</p>
+    <p>Monthly Operational Income: <b>${formatNumber(monthlyOperationIncome)}</b></p>
+    <p>Annual Operational Income: <b>${formatNumber(annualOperationIncome)}</b></p>
+    <p>Total Business Valuation: <b>${formatNumber(totalBusinessPrice)}</b></p>
+    <p>Return on Business Purchase Price: <b>${businessInterestRate.toFixed(2)}%</b></p>
+    <p>Return on Personal Investment: <b>${personalInvestmentInterest.toFixed(2)}%</b></p>
+    <p>Time to Recoup Loan Interest with Income:<b> ${yearsToPayOffInterest.toFixed(2)} Years </b></p>
+    <p>Time Till you can own 100% of the business: <b>${yearsToPayOffLoan.toFixed(2)} Years </b></p>
+    <p>Cumulative Loan Payments: <b>${formatNumber(totalPayments)}</b></p>
+    <p>Average Monthly Loan Payment: <b>${formatNumber(monthlyLoanPayment)}</b></p>
+    <p>Total Interest Incurred on Loan: <b>${formatNumber(totalInterestPaid)}</b></p>
+    <p>Net Monthly Profit (Post-Loan Payments): <b>${formatNumber(adjustedMonthlyProfit)}</b></p>
+    <p>Net Annual Profit (Post-Loan Payments): <b>${formatNumber(adjustedAnnualProfit)}</b></p>
     `;
 
     document.getElementById('result').innerHTML = resultHTML;
@@ -125,14 +125,22 @@ function drawPieChart(principal, interest) {
             options: {
                 maintainAspectRatio: false,
                 responsive: true,
-                width: 100,
-                height: 100, // Set the desired width and height
+                width: 1,
+                height: 1, // Set the desired width and height
                 plugins: {
                     title: {
                         display: true,
                         text: 'Loan Payment Breakdown (Principal vs. Interest)',
                         font: {
-                            size: 16
+                            size: window.innerWidth < 800 ? 8 : 16 // Adjust title font size based on screen width
+                        }
+                    },
+                    // Adjust font size of labels based on screen width
+                    legend: {
+                        labels: {
+                            font: {
+                                size: window.innerWidth < 800 ? 8 : 12 // Adjust font size based on screen width
+                            }
                         }
                     }
                 },
@@ -152,8 +160,17 @@ function drawPieChart(principal, interest) {
                 cutoutPercentage: 80,
             },
         });
+
+        // Add chart-labels class to chart labels
+        document.querySelectorAll('#loanChart .chartjs-text').forEach(label => {
+            label.classList.add('chart-labels');
+        });
     }
 }
+
+
+
+
 
 function drawLoanPaymentChart(profit, payment) {
     var ctx = document.getElementById('loanPaymentChart').getContext('2d');
@@ -175,14 +192,21 @@ function drawLoanPaymentChart(profit, payment) {
             options: {
                 maintainAspectRatio: false,
                 responsive: true,
-                width: 100,
-                height: 100, // Set the desired width and height
+                width: 1,
+                height: 1, // Set the desired width and height
                 plugins: {
                     title: {
                         display: true,
                         text: 'Monthly Loan Payments as a Share of Monthly Income',
                         font: {
-                            size: 16
+                            size: window.innerWidth < 800 ? 8 : 16 // Adjust title font size based on screen width
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            font: {
+                                size: window.innerWidth < 800 ? 8 : 12 // Adjust font size based on screen width
+                            }
                         }
                     }
                 },
@@ -196,44 +220,86 @@ function drawLoanPaymentChart(profit, payment) {
                     displayColors: true,
                     caretPadding: 10,
                 },
-                legend: {
-                    display: true
-                },
                 cutoutPercentage: 50,
             },
+        });
+
+        // Add chart-labels class to chart labels
+        document.querySelectorAll('#loanChart .chartjs-text').forEach(label => {
+            label.classList.add('chart-labels');
         });
     }
 }
 
 
+
+
+
+
+
+// Function to send queries to ChatGPT or a similar AI and other event listeners...
+
+// Function to send queries to ChatGPT or a similar AI
 async function askAI() {
     const userQuery = document.getElementById('userQuery').value;
-    const calculatorResults = document.getElementById('result').innerText;
+    let augmentedQuery = userQuery;
 
-    const requestData = {
-        query: userQuery,
-        results: calculatorResults
-    };
+    // Check if calculator results are displayed
+    const resultElement = document.getElementById('result');
+    if (resultElement && resultElement.style.display !== 'none') {
+        const calculatorResults = resultElement.innerText;
+
+        augmentedQuery = `
+        Soon I will ask you a question. I want you to respond to my question, however if my question involves
+        something about this data, respond to my question given that data:
+
+        " ${calculatorResults} "
+
+        - However, if my question does not involve business or this data somehow, I want you to ignore the previous business
+        data and just answer my question normally.
+
+        - Ok, here is my question:
+
+        " ${userQuery} "
+
+        - also, moving forward, do not talk about the fact that you are doing this, or reference any of the data about the business unless specifically
+        asked to talk about it.
+
+        Also, I want you to take into account that you are a tool to help a potential investor that is interested in
+        buying a business. The investor is most importantly interested in generating a profit for himself and will be
+        especially focusing on the Return on investment he will get from his personal investment costs
+
+        Also a business is a better business if it generates more monthly cash flow minus the loan payment costs each month, the higher the ratio of
+        monthly cash flow to loan payment costs, the better the business is (make sure to mention this in your answer if applicable)
+        `;
+
+        console.log(augmentedQuery); // Log the augmentedQuery directly
+    }
 
     const responseElement = document.getElementById('aiResponse');
 
     try {
-        const response = await fetch('/ask-augmented-openai', {
+        const response = await fetch('/ask-openai', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestData)
+            body: JSON.stringify({ prompt: augmentedQuery, max_tokens: 150 }) // Use the augmentedQuery here
         });
 
         const text = await response.text();
-        responseElement.innerText = text;
-        responseElement.style.display = 'block';
+
+        if (text) {
+            responseElement.innerText = text;
+            responseElement.style.display = 'block'; // Make the element visible
+        } else {
+            responseElement.innerText = 'No response from AI.';
+            responseElement.style.display = 'block'; // Make the element visible
+        }
     } catch (error) {
         console.error('Error:', error);
         responseElement.innerText = 'Failed to get response.';
-        responseElement.style.display = 'block';
+        responseElement.style.display = 'block'; // Make the element visible even in case of error
     }
 }
-
 
 // Add event listener for 'Enter' keypress
 document.addEventListener('keypress', function(e) {
